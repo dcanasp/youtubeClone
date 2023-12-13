@@ -19,8 +19,8 @@ export class Database {
         username: 'postgres',
         password: 'Colegio5',
         database: 'ytClone',
-        logging: false //si lo quiero lo quito
-        // logging: (msg) => logger.info(msg), //si lo quiero lindo
+        // logging: false //si lo quiero lo quito
+        logging: (msg) => logger.info(msg), //si lo quiero lindo
       });
     }
   

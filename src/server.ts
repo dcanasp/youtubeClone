@@ -7,7 +7,7 @@ const main = async () => {
   const db = new Database();
   await db.connect();
   // instance fastify web service
-  await App(+process.env.PORT! || 3005);
+  await new App().startApp(+process.env.PORT! || 3005);
 
     
 

@@ -1,4 +1,4 @@
-import pino from 'pino';
+import pino, { levels } from 'pino';
 const fileTransport = pino.transport({
     target: 'pino/file',
     options: { destination: "./logs/info.log" },
@@ -7,6 +7,7 @@ const fileTransport = pino.transport({
 const environment = process.env.NODE_ENV! || "test";
 export const envToLogger = {
 development: {
+    level: 'trace',
     transport: {
     target: 'pino-pretty',
     options: {
@@ -22,5 +23,6 @@ test: false,
 
 export const logger = pino(
     //@ts-ignore
-    envToLogger[environment] ?? true
+    envToLogger[environment] ?? true,
+    
 );
