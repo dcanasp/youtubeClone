@@ -1,6 +1,6 @@
 import {UserService} from '../services/user.service';
 import {hashPassword} from '../utils/hash';
-import { IRegister,ILogin } from '../dto/userDTO';
+import { IRegister,ILogin } from '../dto/DTO';
 import { logger } from '../utils/logger';
 
 

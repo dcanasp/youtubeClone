@@ -1,6 +1,8 @@
 import Fastify,{FastifyInstance,FastifyPluginAsync} from 'fastify';
 import jwt from '@fastify/jwt';
+import fastifyMultipart from '@fastify/multipart';
 import { UserRoutes } from './routes/users.routes';
+import { VideosRoutes } from './routes/video.routes';
 import { envToLogger, logger } from './utils/logger'
 // import './custom-fastify';
 // import {} from '@fastify/jwt'
@@ -13,21 +15,16 @@ export class App{
 	
 	public startApp = async (portNumber: number) => {
 		const jwt_secret = process.env.jwt_secret;
-        this.fastifySetup(UserRoutes);
         this.plugins(jwt_secret||'it seems i forgot to add my secret');
         this.listen(portNumber);
-    };
+		this.routes();// las rutas deben estar despues de los plugins
+	};
 	
-	private fastifySetup(userRoutesFunction: FastifyPluginAsync){
+	private plugins(jwt_secret:string){
 		App.fastifyInstance = Fastify({
 			logger: false
 		});
 		//register your routes
-	
-		App.fastifyInstance.register(userRoutesFunction, { prefix: "/user" });
-	
-	}
-	private plugins(jwt_secret:string){
 		//register plugins
 		App.fastifyInstance.register(jwt, {
 			secret: jwt_secret,
@@ -36,6 +33,9 @@ export class App{
 			}
 			
 		});
+		App.fastifyInstance.register(fastifyMultipart, {
+			attachFieldsToBody: true,
+		  });	
 		App.fastifyInstance.decorate("authenticate", async function(request, reply) {
 			try {
 			  await request.jwtVerify()
@@ -57,7 +57,10 @@ export class App{
 		});
 	}
 	
-
+	private routes(){
+		App.fastifyInstance.register(UserRoutes, { prefix: "/user" });
+		App.fastifyInstance.register(VideosRoutes, { prefix: "/videos" });
+	}
 	public GetFastifyInstance(){
 		return App.fastifyInstance;
 	}

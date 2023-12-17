@@ -14,7 +14,7 @@ export class UserService{
                 throw new Error('Invalid email');
             }
             const newUser = await users.create({username,password:hash,email,bio,profile_picture_url });
-            const token = await signToken({username});
+            const token = await signToken({username,userId:newUser.dataValues.id});
             return {"success":true,"token":token};
         }
         catch (error:any) {
@@ -36,7 +36,7 @@ export class UserService{
             if (await verifyHash(password,user.dataValues.password) === false){
                 return { "success": false, "err": "unvalid credentials" };
             }
-            const token = await signToken({username});
+            const token = await signToken({username,userId:user.dataValues.id});
             return {"success":true,"token":token};
         }
         catch (error:any) {
@@ -97,7 +97,6 @@ export class UserService{
 
             const { password, ...userInfoWithoutPassword } = user.dataValues;
             return { ...userInfoWithoutPassword, success: true };
-            return user;
         }
         catch (error:any) {
             logger.error('Error fetching data:', error);

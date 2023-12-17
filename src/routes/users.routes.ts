@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify';
 import { UsersSchemas } from '../dto/schemas';
-import { ILogin, IRegister,JWTPayload } from '../dto/userDTO';
+import { ILogin, IRegister,JWTPayload } from '../dto/DTO';
 import { UserController } from '../controller/user.controller';
 import {App} from '../app';
 import { logger } from '../utils/logger';
@@ -31,7 +31,7 @@ export async function UserRoutes(fastify: FastifyInstance, options: RouteShortha
 	
 	//update information
 	fastify.post<{Body:Partial<IRegister>}>
-	('/me', { onRequest: [fastifyInstance.authenticate]
+	('/me', { schema: { body: userSchemas.updateSchema },onRequest: [fastifyInstance.authenticate]
 	}, async (request, reply) => {		
 		return userController.editUser((request.user as JWTPayload).payload.username,request.body);
 	});

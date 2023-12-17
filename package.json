@@ -16,7 +16,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.474.0",
     "@fastify/jwt": "^7.2.4",
+    "@fastify/multipart": "^6.0.1",
     "argon2": "^0.31.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
