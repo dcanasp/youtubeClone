@@ -15,7 +15,6 @@ export const uploadToS3 = async (fileName: string, fileContent: Buffer,folder:st
 
   try {
     const response = await client.send(command);
-    logger.info(response);
     // return response.$metadata.requestId;
     return {success: true,link: process.env.S3_url + fullkey}
 } catch (err) {

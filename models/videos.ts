@@ -9,6 +9,7 @@ export interface videosAttributes {
   user_id: number;
   title: string;
   description?: string;
+  uuid: string;
   tags?: string;
   views?: number;
   upload_date: Date;
@@ -27,6 +28,7 @@ export class videos extends Model<videosAttributes, videosCreationAttributes> im
   user_id!: number;
   title!: string;
   description?: string;
+  uuid!: string; 
   tags?: string;
   views?: number;
   upload_date!: Date;
@@ -87,6 +89,11 @@ export class videos extends Model<videosAttributes, videosCreationAttributes> im
     description: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    uuid: {
+      type: DataTypes.UUID,  
+      allowNull: false,
+      unique: true
     },
     tags: {
       type: DataTypes.STRING(255),
