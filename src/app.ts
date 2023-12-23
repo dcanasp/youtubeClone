@@ -1,6 +1,7 @@
-import Fastify,{FastifyInstance,FastifyPluginAsync} from 'fastify';
+import Fastify,{FastifyInstance,FastifyPluginAsync,FastifyServerOptions} from 'fastify';
 import jwt from '@fastify/jwt';
 import fastifyMultipart from '@fastify/multipart';
+import fs from 'fs';
 import { UserRoutes } from './routes/users.routes';
 import { VideosRoutes } from './routes/video.routes';
 import { envToLogger, logger } from './utils/logger'
@@ -10,6 +11,20 @@ import { envToLogger, logger } from './utils/logger'
 export class App{
 	private static fastifyInstance:FastifyInstance;
 	public constructor(){
+
+		// const httpsOptions: FastifyServerOptions = {
+			// https: {
+			//   allowHTTP1: true, // fallback support for HTTP1
+			//   key: fs.readFileSync('../cert/server-private-key.pem'),
+			//   cert: fs.readFileSync('../cert/server-certificate.crt'),
+			//   ca: fs.readFileSync('../cert/ca-certificate.crt'),
+			//   requestCert: true, // Request a certificate from clients
+			//   rejectUnauthorized: true // clients need to provide a valid certificate
+			// },
+		// 	logger: false
+		//   };
+	  
+		//   App.fastifyInstance = Fastify(httpsOptions);
 		
 	}
 	
@@ -22,9 +37,16 @@ export class App{
 	
 	private plugins(jwt_secret:string){
 		App.fastifyInstance = Fastify({
+			https:{
+				// allowHTTP1: true, // fallback support for HTTP1
+				key: fs.readFileSync('./cert/server-private-key.pem'),
+				cert: fs.readFileSync('./cert/server-certificate.crt'),
+				ca: fs.readFileSync('./cert/ca-certificate.crt'),
+				requestCert: true, // Request a certificate from clients
+				rejectUnauthorized: true // clients need to provide a valid certificate  
+			},
 			logger: false
 		});
-		//register your routes
 		//register plugins
 		App.fastifyInstance.register(jwt, {
 			secret: jwt_secret,
@@ -58,6 +80,7 @@ export class App{
 	}
 	
 	private routes(){
+		//register your routes
 		App.fastifyInstance.register(UserRoutes, { prefix: "/user" });
 		App.fastifyInstance.register(VideosRoutes, { prefix: "/videos" });
 	}
