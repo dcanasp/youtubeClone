@@ -8,7 +8,7 @@ import {generateUuid} from '../utils/createUUID'
 export class VideoController{
     private videoService;
     public constructor(){
-        this.videoService = new VideoService;
+        this.videoService = new VideoService();
     }
 public async upload(userId:number,username:string,body:IVideo){
         if(!body.content){

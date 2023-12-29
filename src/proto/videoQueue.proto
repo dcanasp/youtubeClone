@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package videoPackage;
+
+service Video{
+  rpc UpdateVideoStatus(Uuid) returns (success);
+}
+
+enum VideoStatus {
+  pending = 0;
+  processing = 1;
+  completed = 2;
+}
+message Uuid{
+  required string value = 1;
+  required VideoStatus status = 2;
+}
+
+message success{
+  required bool success = 1;
+  optional string err =2;
+}
+
+// message voidNoParam {}
+
+// message bookItem {
+//   int32 id = 1;
+//   string title = 2;
+//   string author = 3;
+//   string content = 4;
+// }
+
+// message bookItems {
+//   repeated bookItem items = 1;
+// }
+
+// message bookId {
+//   int32 id = 1;
+// }
+// syntax = "proto3";
+
+// option java_multiple_files = true;
+// option java_package = "io.grpc.examples.helloworld";
+// option java_outer_classname = "HelloWorldProto";
+// option objc_class_prefix = "HLW";
+
+// package helloworld;
+
+// // The greeting service definition.
+// service Greeter {
+//   // Sends a greeting
+//   rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+//   rpc SayHelloStreamReply (HelloRequest) returns (stream HelloReply) {}
+// }
+
+// // The request message containing the user's name.
+// message HelloRequest {
+//   string name = 1;
+// }
+
+// // The response message containing the greetings
+// message HelloReply {
+//   string message = 1;
+// }

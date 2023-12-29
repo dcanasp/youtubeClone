@@ -36,15 +36,15 @@ export class App{
 	};
 	
 	private plugins(jwt_secret:string){
-		App.fastifyInstance = Fastify({
-			https:{
-				// allowHTTP1: true, // fallback support for HTTP1
-				key: fs.readFileSync('./cert/server-private-key.pem'),
-				cert: fs.readFileSync('./cert/server-certificate.crt'),
-				ca: fs.readFileSync('./cert/ca-certificate.crt'),
-				requestCert: true, // Request a certificate from clients
-				rejectUnauthorized: true // clients need to provide a valid certificate  
-			},
+		App.fastifyInstance = Fastify({ 
+			//si quiero que solo permita tls. se hara en gRPC
+			// https:{
+			// 	key: fs.readFileSync('./cert/server-private-key.pem'),
+			// 	cert: fs.readFileSync('./cert/server-certificate.crt'),
+			// 	ca: fs.readFileSync('./cert/ca-certificate.crt'),
+			// 	requestCert: true, // Request a certificate from clients
+			// 	rejectUnauthorized: true // clients need to provide a valid certificate  
+			// },
 			logger: false
 		});
 		//register plugins

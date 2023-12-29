@@ -3,7 +3,7 @@ dotenv.config();
 import { Database } from "./db/index";
 import {App} from './app'
 const main = async () => {
-  // instance ORM
+  // instance ORM and start the Database Conecction
   const db = new Database();
   await db.connect();
   // instance fastify web service

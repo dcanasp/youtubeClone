@@ -58,7 +58,7 @@ export class VideoService{
         
     }
    
-    public async changeVideo_status (video_id:string,status:processing_status,){
+    public async changeVideo_status (video_id:string,status:processing_status){
         const video = await videos.findOne({
             where: {
                 uuid: video_id
@@ -72,6 +72,11 @@ export class VideoService{
 
         await video.update(updates);
 
+        return {success:true};   
+
     }
 
+    public async test(){
+        return true;
+    }
 }
