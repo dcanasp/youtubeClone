@@ -81,6 +81,12 @@ func ListenToQueue(bucketBasics s3Connect.BucketBasics) {
 			if s3CreationErr != nil {
 				log.Printf("Error uploading to S3: %v", err)
 			}
+			//Send to server that upload is completed
+			resp, err := MarkCompleted(msg.UUID)
+			if err != nil {
+				log.Fatalf("Error when marking as completed: %v", err)
+			}
+			fmt.Printf("MarkCompleted response: %v\n", resp)
 
 		}
 	}()

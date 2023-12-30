@@ -3,6 +3,7 @@ import { loadSync } from "@grpc/proto-loader";
 import { VideoService } from "./video.service";
 import { logger } from "../utils/logger";
 import { Database } from "../db";
+import fs from "fs";
 
 const packageDef = loadSync("./src/proto/videoQueue.proto", {});
 const grpcObject = loadPackageDefinition(packageDef);
@@ -21,11 +22,25 @@ const main = async () => {
         });
 
 
-
-    server.bindAsync("127.0.0.1:50000", ServerCredentials.createInsecure(), (error, port) => {
-        server.start();
-        console.log(`listening on port ${port}`);
-    });
+        const serverKey = fs.readFileSync('./cert/server-private-key.pem');
+        const serverCert = fs.readFileSync('./cert/server-certificate.crt');
+        const caCert = fs.readFileSync('./cert/ca-certificate.crt');
+        
+        const serverCredentials = ServerCredentials.createSsl(
+          caCert, 
+          [{ cert_chain: serverCert, private_key: serverKey }], 
+          true // This enables client certificate checking, making the connection mutually authenticated
+        );
+        
+        // Start the server with the secure credentials
+        server.bindAsync("127.0.0.1:50000", serverCredentials, (error, port) => {
+          if (error) {
+            logger.error(`Failed to bind server: ${error}`);
+            return;
+          }
+          server.start();
+          logger.info(`gRPC server listening on port ${port}`);
+        });
 
 }
 main();

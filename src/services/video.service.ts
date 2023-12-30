@@ -20,7 +20,7 @@ export class VideoService{
         }
         
     }
-    public async uploadToQueue(UserName:string,content:Buffer){
+    public async uploadToQueue(UserName:string,uuid:string,content:Buffer){
         try {
             const user = process.env.rabbitMQCredentials;
             const url = process.env.rabbitMQServerIP;
@@ -29,9 +29,7 @@ export class VideoService{
     
             const queueName = 'video_processing_queue';
             await channel.assertQueue(queueName, { durable: true });
-    
-            const uuid = generateUuid();
-    
+        
             const message = {
                 uuid: uuid,
                 UserName: UserName,
