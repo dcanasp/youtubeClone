@@ -3,5 +3,6 @@ build
 .env
 logs
 testVideos
-HighQualityMicroservice/**/*.exe
+/**/*.exe
 **/cert/
+/secondServer/setENV.go

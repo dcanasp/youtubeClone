@@ -2,7 +2,7 @@
 start:
 	@echo "Building the application..."
 	@go build -o bin/ 
-	@echo "Running the application..."
-	@./bin/ytclone.exe
+	@echo "listening to request..."
+	@./bin/metaData.exe
 
 # Compilado con gnuWin32
