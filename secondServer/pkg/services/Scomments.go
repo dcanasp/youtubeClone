@@ -12,7 +12,6 @@ func CheckComments(videoId int) ([]dto.CommentsJoinUser, error) {
 	db := myDB.DB
 
 	rows, err := db.Query(`select * from "comments" JOIN users ON "comments".user_id = users.id where video_id = $1`, videoId)
-	fmt.Print(rows.Columns())
 	if err != nil {
 		log.Fatalf("Error executing query: %v\n", err)
 		var x []dto.CommentsJoinUser

@@ -1,7 +1,7 @@
 import pino, { levels } from 'pino';
 const fileTransport = pino.transport({
     target: 'pino/file',
-    options: { destination: "./logs/info.log" },
+    // options: { destination: "./logs/info.log" },
   });
   
 const environment = process.env.NODE_ENV! || "test";

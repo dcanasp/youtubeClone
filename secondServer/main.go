@@ -22,9 +22,14 @@ func main() {
 
 	s := r.PathPrefix("/likes").Subrouter()
 	k := r.PathPrefix("/comments").Subrouter()
+	l := r.PathPrefix("/subscriptions").Subrouter()
+	m := r.PathPrefix("/videos").Subrouter()
 	// "/products/"
 	// s.HandleFunc("/", )
 	routes.Likes(s)
 	routes.Comments(k)
+	routes.Subscriptions(l)
+	routes.Videos(m)
+
 	http.ListenAndServe(":80", r)
 }
