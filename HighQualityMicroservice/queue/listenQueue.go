@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"ytclone/ffmpeg"
 	"ytclone/s3Connect"
 
 	"github.com/joho/godotenv"
@@ -75,13 +76,19 @@ func ListenToQueue(bucketBasics s3Connect.BucketBasics) {
 			}
 
 			fmt.Printf("Received a message: %s with video buffer size: %d\n", msg.UUID, len(videoBuffer))
+			//create files
+			err = ffmpeg.Create(videoBuffer)
+			if err != nil {
+				log.Fatal("Video creation failed ", err)
+			}
 			//UPLOAD TO S3
 			BucketName := os.Getenv("S3_BUCKET")
-			s3CreationErr := bucketBasics.UploadBuffer(BucketName, msg.UserName, "GO"+msg.UUID, videoBuffer)
+			s3CreationErr := bucketBasics.UploadBuffer(BucketName, msg.UserName, msg.UUID)
 			if s3CreationErr != nil {
 				log.Printf("Error uploading to S3: %v", err)
 			}
 			//Send to server that upload is completed
+			ffmpeg.Delete()
 			resp, err := MarkCompleted(msg.UUID)
 			if err != nil {
 				log.Fatalf("Error when marking as completed: %v", err)

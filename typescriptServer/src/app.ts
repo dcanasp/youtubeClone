@@ -57,6 +57,15 @@ export class App{
 		});
 		App.fastifyInstance.register(fastifyMultipart, {
 			attachFieldsToBody: true,
+			limits: {
+				// Adjust these values based on your requirements
+				fieldNameSize: 100,  // Max field name size in bytes
+				fieldSize: 1024 * 1024 * 100,  // Max field value size in bytes
+				fields: 10,  // Max number of non-file fields
+				fileSize: 1024 * 1024 * 500,  // Max file size in bytes (e.g., 500 MB)
+				files: 1,  // Max number of file fields
+				headerPairs: 2000,  // Max number of header key-value pairs
+			  },
 		  });	
 		App.fastifyInstance.decorate("authenticate", async function(request, reply) {
 			try {

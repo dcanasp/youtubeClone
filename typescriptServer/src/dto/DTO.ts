@@ -10,6 +10,9 @@ export interface ILogin {
     username: string;
     password: string;
 }
+export interface StreamParams {
+    uuid: string;
+  }
 
 export type JWTPayload = {
     payload: {

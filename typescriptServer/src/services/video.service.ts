@@ -73,6 +73,35 @@ export class VideoService{
         return {success:true};   
 
     }
+    public async findVideo(uuid:string){
+        const video = await videos.findOne({
+            where: {
+                uuid: uuid
+            }
+        });
+        if (!video){
+            return {"success":false,err:"No video with that uuid"}
+        }
+        return {success:true, data: video.dataValues}
+        
+    }
+    public async changeUrl (video_id:string,url:string){
+        const video = await videos.findOne({
+            where: {
+                uuid: video_id
+            }
+        });
+        if (!video){
+            return {"success":false,err:"No video with that uuid"}
+        }
+        const updates:Partial<typeof video.dataValues> = {};
+        updates.file_url = url
+
+        await video.update(updates);
+
+        return {success:true};   
+
+    }
 
     public async test(){
         return true;

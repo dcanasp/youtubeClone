@@ -24,7 +24,6 @@ func Stream(uuid string) (dto.VideosTable, error) {
 		var x dto.VideosTable
 		return x, err
 	}
-
 	return result, nil
 
 }

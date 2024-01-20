@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple MPEG-DASH Streaming with Quality Selector</title>
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+</head>
+<body>
+    <video id="videoPlayer" width="640" height="360" controls></video>
+
+    <select id="qualitySelector">
+        <!-- Quality options will be populated here -->
+    </select>
+
+    <script>
+        var url = "https://ytclone-dcanasp.s3.amazonaws.com/s3Last/27ecc455-d67b-43af-a63c-a89b03f6590f/output.mpd"; 
+        var player = dashjs.MediaPlayer().create();
+        player.initialize(document.querySelector("#videoPlayer"), url, true);
+
+        player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, function() {
+            var videoQualities = player.getBitrateInfoListFor("video");
+            var qualitySelector = document.getElementById('qualitySelector');
+
+            videoQualities.forEach((quality, index) => {
+                var option = document.createElement('option');
+                option.value = index;
+                option.text = quality.qualityIndex + " (" + quality.bitrate / 1000 + " kbps)";
+                qualitySelector.appendChild(option);
+            });
+
+            qualitySelector.onchange = function() {
+                player.setQualityFor("video", this.value);
+            };
+        });
+    </script>
+</body>
+</html>

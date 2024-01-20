@@ -1,0 +1,1 @@
+The purpose of this project never was creating a good frontend. I need one for testing. But this is not the strenght of the project

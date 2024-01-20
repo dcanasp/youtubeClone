@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify';
 import { UsersSchemas,VideosSchemas } from '../dto/schemas';
-import { ILogin, IRegister,JWTPayload,IVideo } from '../dto/DTO';
+import { ILogin, IRegister,JWTPayload,IVideo,StreamParams} from '../dto/DTO';
 import { UserController } from '../controller/user.controller';
 import { VideoController } from '../controller/video.controller';
 import {App} from '../app';
@@ -19,6 +19,26 @@ export async function VideosRoutes(fastify: FastifyInstance, options: RouteShort
 			const userPayload = (request.user as JWTPayload).payload
 			return videoController.upload(userPayload.userId,userPayload.username,request.body);
 		});
+
+	fastify.get<{ Params: StreamParams }>('/streamFromServer/:uuid',{},async (request, reply) => {
+		const uuid = request.params.uuid;
+		// const videoUrl = await videoController.findUrl(uuid);
+		// if (videoUrl.success == false){
+		// 	return videoUrl
+		// }
+		// //@ts-ignore
+		// const videoStream = await videoController.download(videoUrl.videoUrl)
+
+		const mpdFilePath = videoController.getMPDFilePath(uuid); // Function to find the MPD file path based on UUID
+
+		if (!mpdFilePath) {
+			reply.code(404).send('MPD file not found');
+			return;
+		}
+
+		// reply.type('application/dash+xml').sendFile(mpdFilePath);
+		// return videoController.stream(uuid);
+	});
 
 
 }
