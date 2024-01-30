@@ -40,5 +40,10 @@ export async function VideosRoutes(fastify: FastifyInstance, options: RouteShort
 		// return videoController.stream(uuid);
 	});
 
+	fastify.get<{ Params: StreamParams }>('/loadBalancer',{},async (request, reply) => {
+
+		return {success: "Works from typescript!"}
+	});
+
 
 }

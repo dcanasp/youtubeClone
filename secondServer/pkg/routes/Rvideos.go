@@ -66,4 +66,13 @@ func Videos(r *mux.Router) {
 		fmt.Fprintf(w, `{"success":true}`)
 
 	}).Methods("DELETE")
+
+	r.HandleFunc("/loadBalancer", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		w.WriteHeader(http.StatusOK)
+
+		fmt.Fprintf(w, `{"success":"STREAMING FROM GO!!"}`)
+
+	}).Methods("GET")
 }
